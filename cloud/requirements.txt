@@ -1,0 +1,6 @@
+Flask
+gunicorn>=20.1.0
+flask_sqlalchemy
+psycopg2-binary
+flask-login
+kubernetes

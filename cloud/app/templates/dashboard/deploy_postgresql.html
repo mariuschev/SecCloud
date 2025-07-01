@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>Déployer une base PostgreSQL</h1>
+{% endblock %}
+{% block content %}
+  <form method="post">
+    <label for="version">Version :</label>
+    <select name="version" id="version">
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+    </select><br>
+
+    <label for="storage">Taille base :</label>
+    <input type="range" id="storage" name="storage" min="250" max="2048" value="250" step="1" oninput="updateStorageValue(this.value)">
+    <span id="storage-value">250 Mo</span>
+    <br>
+
+    <label for="postgres_db">Nom de la base de données :</label>
+    <input type="text" id="postgres_db" name="postgres_db" value="wordpress"><br>
+
+    <label for="postgres_user">Utilisateur de la base :</label>
+    <input type="text" id="postgres_user" name="postgres_user" value="wpuser"><br>
+    
+    <label for="postgres_password">Mot de passe de la base :</label>
+    <input type="password" id="postgres_password" name="postgres_password" value="wppass"><br>
+
+    <label>Accès externe (max 5 IPs à whitelister) :</label><br>
+    <input type="text" name="ip1" placeholder="IP 1"><br>
+    <input type="text" name="ip2" placeholder="IP 2"><br>
+    <input type="text" name="ip3" placeholder="IP 3"><br>
+    <input type="text" name="ip4" placeholder="IP 4"><br>
+    <input type="text" name="ip5" placeholder="IP 5"><br>
+
+    <label for="retention">Rétention sauvegardes :</label>
+    <select name="retention" id="retention">
+      <option value="7">7 jours</option>
+      <option value="14">14 jours</option>
+      <option value="30">30 jours</option>
+    </select><br>
+
+    <label for="backup">Sauvegardes supplémentaires :</label>
+    <select name="backup" id="backup">
+      <option value="none">Aucune</option>
+      <option value="daily">Quotidienne</option>
+      <option value="weekly">Hebdomadaire</option>
+      <option value="monthly">Mensuelle</option>
+    </select><br>
+
+    <label for="requests_cpu">CPU minimum (requests) :</label>
+    <input type="text" id="requests_cpu" name="requests_cpu" value="250m" placeholder="ex: 250m"><br>
+
+    <label for="limits_cpu">CPU maximum (limits) :</label>
+    <input type="text" id="limits_cpu" name="limits_cpu" value="500m" placeholder="ex: 500m"><br>
+
+    <label for="requests_memory">Mémoire minimum (requests) :</label>
+    <input type="text" id="requests_memory" name="requests_memory" value="512Mi" placeholder="ex: 512Mi"><br>
+
+    <label for="limits_memory">Mémoire maximum (limits) :</label>
+    <input type="text" id="limits_memory" name="limits_memory" value="1Gi" placeholder="ex: 1Gi"><br>
+
+    <label>
+      <input type="checkbox" name="connect_wordpress" value="1">
+      Connecter automatiquement à WordPress si installé
+    </label><br>
+
+    <button type="submit">Déployer PostgreSQL</button>
+  </form>
+
+  <form method="post" action="{{ url_for('routes.delete_service', service_name='postgres-service') }}" onsubmit="return confirm('Supprimer PostgreSQL et toutes ses données ?');">
+    <button type="submit" class="btn btn-danger">Supprimer PostgreSQL</button>
+  </form>
+
+  <script>
+  function updateStorageValue(val) {
+    let display = val < 1024 ? val + " Mo" : (Math.round(val/1024*100)/100) + " Go";
+    document.getElementById('storage-value').innerText = display;
+  }
+  </script>
+{% endblock %} 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Votre Cloud</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <h1><a href="{{ url_for('routes.index') }}">Mon Cloud Souverain</a></h1>
+        <ul>
+            {% if session.user_id %}
+                <li><span>Bonjour, {{ session.user_id }}</span></li>
+                <li><a href="{{ url_for('routes.dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ url_for('routes.logout') }}">Déconnexion</a></li>
+            {% else %}
+                <li><a href="{{ url_for('routes.register') }}">S'inscrire</a></li>
+                <li><a href="{{ url_for('routes.login') }}">Se connecter</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </section>
+</body>
+</html> 

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>Mes services déployés</h1>
+{% endblock %}
+{% block content %}
+  <h2>Services déployés</h2>
+  <table border="1" style="width:100%; text-align:center;">
+    <tr>
+      <th>Nom</th>
+      <th>Ports</th>
+      <th>État</th>
+      <th>Actions</th>
+    </tr>
+    {% for svc in services %}
+    <tr>
+      <td>{{ svc.name }}</td>
+      <td>
+        {% for port in svc.ports %}
+          {{ port }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+      <td>{{ svc.status }}</td>
+      <td>
+        {% if svc.pod_name %}
+          <form method="post" action="{{ url_for('routes.logs_service', pod_name=svc.pod_name, ns_name=ns_name) }}" style="display:inline;">
+            <button type="submit">Voir logs</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{{ url_for('routes.delete_service', service_name=svc.name, ns_name=ns_name) }}" style="display:inline;" onsubmit="return confirm('Supprimer ce service et toutes ses ressources associées ?');">
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+        {% if svc.name == 'minio' and svc.console_url %}
+          <a href="{{ svc.console_url }}" target="_blank" class="btn btn-success">Accéder (console web)</a>
+        {% elif svc.nodeport_url %}
+          <a href="{{ svc.nodeport_url }}" target="_blank" class="btn btn-success">Accéder</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %} 

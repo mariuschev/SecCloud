@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Supprimer mon compte</h2>
+  <p>Êtes-vous sûr de vouloir supprimer votre compte <strong>{{ user.username }}</strong> ?<br>
+  Cette action est irréversible et supprimera également votre espace Kubernetes associé.</p>
+  <form method="post">
+    <button type="submit" class="btn btn-danger">Oui, supprimer mon compte</button>
+    <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Annuler</a>
+  </form>
+{% endblock %} 

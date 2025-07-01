@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Logs du pod : {{ pod_name }}</h2>
+<pre style="background:#222;color:#eee;padding:1em;max-height:600px;overflow:auto;">{{ logs }}</pre>
+<a href="{{ url_for('routes.services') }}" class="btn btn-primary">Retour aux services</a>
+{% endblock %} 

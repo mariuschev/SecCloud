@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-console-deployment
+  namespace: management
+  labels:
+    app: cloud-console
+spec:
+  replicas: 2
+  serviceAccountName: flask-namespace-admin
+  selector:
+    matchLabels:
+      app: cloud-console
+  template:
+    metadata:
+      labels:
+        app: cloud-console
+    spec:
+      serviceAccountName: flask-namespace-admin
+      containers:
+      - name: cloud-console
+        # IMPORTANT : Remplacez la ligne suivante par le nom de votre image
+        image: marius790000/cloud-console:latest
+        ports:
+        - containerPort: 5000
+        env:
+          - name: FLASK_ENV
+            value: production

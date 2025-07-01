@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>Déployer un stockage S3</h1>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Déployer un service S3 (MinIO)</h2>
+    {% if message %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="storage" class="form-label">Taille du stockage</label>
+            <input type="range" class="form-range" id="storage" name="storage" min="100" max="10240" step="1" value="1024" oninput="document.getElementById('storageValue').innerText = this.value">
+            <span id="storageValue">1024</span> MiB
+            <div class="form-text">Utilisez le curseur pour choisir la taille (en MiB, 1024 = 1GiB)</div>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="encryption" name="encryption">
+            <label class="form-check-label" for="encryption">Chiffrement côté client</label>
+        </div>
+        <div class="mb-3">
+            <label for="lifecycle" class="form-label">Gestion du cycle de vie</label>
+            <select class="form-select" id="lifecycle" name="lifecycle">
+                <option value="30j">30 jours</option>
+                <option value="1an">1 an</option>
+                <option value="illimite" selected>Illimité</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="access_type" class="form-label">Type d'accès</label>
+            <select class="form-select" id="access_type" name="access_type">
+                <option value="prive" selected>Privé</option>
+                <option value="public">Public</option>
+            </select>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="enabled" name="enabled" checked>
+            <label class="form-check-label" for="enabled">Service activé</label>
+        </div>
+        <div class="mb-3">
+            <label for="requests_cpu" class="form-label">CPU minimum (requests.cpu)</label>
+            <input type="text" class="form-control" id="requests_cpu" name="requests_cpu" value="100m" placeholder="Ex: 100m">
+        </div>
+        <div class="mb-3">
+            <label for="limits_cpu" class="form-label">CPU maximum (limits.cpu)</label>
+            <input type="text" class="form-control" id="limits_cpu" name="limits_cpu" value="500m" placeholder="Ex: 500m">
+        </div>
+        <div class="mb-3">
+            <label for="requests_memory" class="form-label">Mémoire minimum (requests.memory)</label>
+            <input type="text" class="form-control" id="requests_memory" name="requests_memory" value="256Mi" placeholder="Ex: 256Mi">
+        </div>
+        <div class="mb-3">
+            <label for="limits_memory" class="form-label">Mémoire maximum (limits.memory)</label>
+            <input type="text" class="form-control" id="limits_memory" name="limits_memory" value="1Gi" placeholder="Ex: 1Gi">
+        </div>
+        <div class="mb-3">
+            <label for="minio_user" class="form-label">Nom d'utilisateur MinIO (MINIO_ROOT_USER)</label>
+            <input type="text" class="form-control" id="minio_user" name="minio_user" value="minioadmin" required>
+        </div>
+        <div class="mb-3">
+            <label for="minio_password" class="form-label">Mot de passe MinIO (MINIO_ROOT_PASSWORD)</label>
+            <input type="password" class="form-control" id="minio_password" name="minio_password" value="minioadmin" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Déployer</button>
+    </form>
+</div>
+{% endblock %} 

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>Déployer un WordPress</h1>
+{% endblock %}
+{% block content %}
+  {% if message %}
+    <div class="alert alert-success">{{ message }}</div>
+  {% endif %}
+  <form method="post" id="wp-form">
+    <label for="php_version">Version PHP :</label>
+    <select name="php_version" id="php_version">
+      <option value="8.1">8.1</option>
+      <option value="8.2">8.2</option>
+      <option value="8.3">8.3</option>
+    </select><br>
+
+    <label for="theme">Thème par défaut :</label>
+    <select name="theme" id="theme">
+      <option value="twentytwentyone">Twenty Twenty-One</option>
+      <option value="twentytwentytwo">Twenty Twenty-Two</option>
+      <option value="twentytwentythree">Twenty Twenty-Three</option>
+    </select><br>
+
+    <label for="storage">Taille de stockage :</label>
+    <input type="range" name="storage" id="storage" min="250" max="2048" step="1" value="250" oninput="document.getElementById('storage-value').innerText = this.value + (this.value < 1024 ? ' Mo' : ' Go')">
+    <span id="storage-value">250 Mo</span><br>
+    <input type="hidden" name="storage_unit" id="storage_unit" value="Mi">
+
+    <label for="backup">Sauvegarde :</label>
+    <select name="backup" id="backup">
+      <option value="none">Aucune</option>
+      <option value="daily">Quotidienne</option>
+      <option value="weekly">Hebdomadaire</option>
+    </select><br>
+
+    <label for="requests_cpu">CPU réservé (requests) :</label>
+    <input type="text" name="requests_cpu" id="requests_cpu" value="250m" placeholder="ex: 250m"><br>
+
+    <label for="limits_cpu">CPU max (limits) :</label>
+    <input type="text" name="limits_cpu" id="limits_cpu" value="500m" placeholder="ex: 500m"><br>
+
+    <label for="requests_memory">Mémoire réservée (requests) :</label>
+    <input type="text" name="requests_memory" id="requests_memory" value="512Mi" placeholder="ex: 512Mi"><br>
+
+    <label for="limits_memory">Mémoire max (limits) :</label>
+    <input type="text" name="limits_memory" id="limits_memory" value="1Gi" placeholder="ex: 1Gi"><br>
+
+    <label for="db_host">Hôte de la base PostgreSQL :</label>
+    <input type="text" id="db_host" name="db_host" value="postgres-service" placeholder="postgres-service"><br>
+
+    <label for="db_name">Nom de la base :</label>
+    <input type="text" id="db_name" name="db_name" value="wordpress" placeholder="wordpress"><br>
+
+    <label for="db_user">Utilisateur :</label>
+    <input type="text" id="db_user" name="db_user" value="wpuser" placeholder="wpuser"><br>
+
+    <label for="db_password">Mot de passe :</label>
+    <input type="password" id="db_password" name="db_password" value="wppass" placeholder="wppass"><br>
+
+    <label for="db_type">Type de base :</label>
+    <input type="text" id="db_type" name="db_type" value="postgresql" placeholder="postgresql"><br>
+
+    <input type="submit" value="Déployer WordPress">
+  </form>
+
+  <form method="post" action="{{ url_for('routes.delete_wordpress') }}" onsubmit="return confirm('Supprimer WordPress et toutes ses données ?');">
+    <button type="submit" class="btn btn-danger">Supprimer WordPress</button>
+  </form>
+
+  <script>
+    // Affichage dynamique de la valeur du curseur
+    const storageInput = document.getElementById('storage');
+    const storageValue = document.getElementById('storage-value');
+    storageInput.addEventListener('input', function() {
+      if (this.value < 1024) {
+        storageValue.innerText = this.value + ' Mo';
+      } else {
+        storageValue.innerText = (this.value / 1024).toFixed(2) + ' Go';
+      }
+    });
+  </script>
+{% endblock %} 

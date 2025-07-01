@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gérer les Ressources</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block header %}
+      <h1>{% block title %}Gérer les Ressources pour {{ username }}{% endblock %}</h1>
+    {% endblock %}
+    
+    {% block content %}
+    <div class="resource-form">
+      <p>Définissez les quotas pour votre namespace <code>user-{{ username }}</code>.</p>
+      <p>Laissez un champ vide pour ne pas définir de limite pour cette ressource.</p>
+      <form method="post">
+        <fieldset>
+            <legend>Limites des requêtes (requests)</legend>
+            <label for="requests_cpu">CPU demandé (ex: "1", "500m")</label>
+            <input name="requests_cpu" id="requests_cpu" value="{{ quota['requests.cpu'] if quota and 'requests.cpu' in quota else '' }}">
+            
+            <label for="requests_memory">Mémoire demandée (ex: "1Gi", "512Mi")</label>
+            <input name="requests_memory" id="requests_memory" value="{{ quota['requests.memory'] if quota and 'requests.memory' in quota else '' }}">
+        </fieldset>
+        
+        <fieldset>
+            <legend>Limites (limits)</legend>
+            <label for="limits_cpu">Limite CPU (ex: "2", "1m")</label>
+            <input name="limits_cpu" id="limits_cpu" value="{{ quota['limits.cpu'] if quota and 'limits.cpu' in quota else '' }}">
+        
+            <label for="limits_memory">Limite Mémoire (ex: "2Gi", "1024Mi")</label>
+            <input name="limits_memory" id="limits_memory" value="{{ quota['limits.memory'] if quota and 'limits.memory' in quota else '' }}">
+        </fieldset>
+
+        <fieldset>
+            <legend>Limites d'objets</legend>
+            <label for="pods">Nombre de Pods</label>
+            <input type="number" name="pods" id="pods" value="{{ quota['pods'] if quota and 'pods' in quota else '' }}">
+        
+            <label for="services">Nombre de Services</label>
+            <input type="number" name="services" id="services" value="{{ quota['services'] if quota and 'services' in quota else '' }}">
+        </fieldset>
+        
+        <input type="submit" value="Appliquer les Quotas">
+      </form>
+    </div>
+    {% endblock %}
+    
+</body>
+</html> 

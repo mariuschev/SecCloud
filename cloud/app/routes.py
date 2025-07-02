@@ -1121,4 +1121,8 @@ def connect_wordpress_postgres():
         body={"spec": {"template": {"metadata": {"annotations": {"kubectl.kubernetes.io/restartedAt": datetime.datetime.utcnow().isoformat()}}}}}
     )
     flash("WordPress a été connecté à PostgreSQL et redémarré !", "success")
-    return redirect(url_for('routes.dashboard')) 
+    return redirect(url_for('routes.dashboard'))
+
+@bp.route('/faq')
+def faq():
+    return render_template('faq.html') 

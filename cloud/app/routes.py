@@ -1125,4 +1125,8 @@ def connect_wordpress_postgres():
 
 @bp.route('/faq')
 def faq():
-    return render_template('faq.html') 
+    return render_template('faq.html')
+
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')

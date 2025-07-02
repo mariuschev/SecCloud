@@ -8,6 +8,9 @@
 </head>
 <body>
     <nav>
+        <a href="{{ url_for('routes.index') }}">
+            <img src="{{ url_for('static', filename='Logo_SecuCloud_transparent_1.png') }}" alt="Logo SecuCloud" class="nav-logo">
+        </a>
         <h1><a href="{{ url_for('routes.index') }}">Mon Cloud Souverain</a></h1>
         <ul>
             {% if session.user_id %}

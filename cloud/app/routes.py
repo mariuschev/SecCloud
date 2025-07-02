@@ -328,12 +328,12 @@ def create_namespace_for_user(username):
     # Création du ResourceQuota par défaut
     quota_name = f"quota-{ns_name}"
     quota_spec = client.V1ResourceQuotaSpec(hard={
-        'requests.cpu': '1',
-        'requests.memory': '1Gi',
-        'limits.cpu': '1',
-        'limits.memory': '1Gi',
+        'requests.cpu': '750m',
+        'requests.memory': '2Gi',
+        'limits.cpu': '1500m',
+        'limits.memory': '3Gi',
         'pods': '5',
-        'services': '2'
+        'services': '5'
     })
     quota_body = client.V1ResourceQuota(
         metadata=client.V1ObjectMeta(name=quota_name),

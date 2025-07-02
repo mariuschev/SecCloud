@@ -9,12 +9,27 @@
   <form method="post">
     <label for="username">Nom d'utilisateur</label>
     <input name="username" id="username" required>
+    <label for="email">Adresse email</label>
+    <input type="email" name="email" id="email" required>
     <label for="password">Mot de passe</label>
     <input type="password" name="password" id="password" required>
+    
     <input type="submit" value="S'inscrire">
   </form>
+  <div id="password-error" style="color:#dc3545; margin-top:10px; display:none;"></div>
   <div class="auth-switch">
       <p>Déjà un compte ? <a href="{{ url_for('routes.login') }}">Connectez-vous</a></p>
   </div>
 </div>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    const password = document.getElementById('password').value;
+    const passwordPolicy = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+    if (!passwordPolicy.test(password)) {
+      event.preventDefault();
+      alert("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+    }
+  });
+</script>
 {% endblock %} 
